@@ -1,6 +1,6 @@
 # PyTextureStudio
 
-A PySide6 and OpenGL desktop app for processing 3D textures, generating PBR maps (Height, Normal, Roughness, Metallic, AO), creating seamless tiles, and packing ORM textures for Unreal Engine and Unity.
+A PySide6 and OpenGL desktop app for processing 3D textures, generating PBR maps starting from an albedo (Height, Normal, Roughness, Metallic, AO), creating seamless tiles, and packing ORM textures for Unreal Engine and Unity.
 
 ## Requirements
 
