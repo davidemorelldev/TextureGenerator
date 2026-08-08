@@ -1,10 +1,3 @@
-"""
-main_window.py
---------------
-Main GUI application window, controls sidebar, previews, and 3D viewport.
-PyTextureStudio - Professional PBR Texture Generator
-"""
-
 from __future__ import annotations
 import os
 import cv2
@@ -13,17 +6,25 @@ import numpy as np
 import logging
 from datetime import datetime
 from pathlib import Path
+
+# Widget GUI
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QGridLayout,
     QLabel, QSlider, QCheckBox, QPushButton, QFileDialog, QProgressDialog,
     QScrollArea, QSizePolicy, QComboBox, QStatusBar, QToolBar,
     QGroupBox, QSplitter, QSpacerItem, QDoubleSpinBox, QMessageBox, QInputDialog,
-    QMenu, QMenuBar, QAction, QShortcut, QKeySequence, QDialog, QTextEdit,
+    QMenu, QMenuBar, QDialog, QTextEdit,
     QTabWidget, QFrame, QToolButton, QDialogButtonBox, QFormLayout
 )
-from PySide6.QtCore import Qt, Signal, QThread, QSettings, QTimer, QSize
-from PySide6.QtGui import QPixmap, QImage, QFont, QIcon, QKeySequence, QActionGroup
 
+# Logica e Core
+from PySide6.QtCore import Qt, Signal, QThread, QSettings, QTimer, QSize, QUrl
+
+# Azioni, Shortcut, Immagini e Colori
+from PySide6.QtGui import (
+    QPixmap, QImage, QFont, QIcon, QKeySequence,
+    QAction, QActionGroup, QShortcut, QColor, QDesktopServices
+)
 from texture_processor import (
     TextureProcessor,
     HeightmapWorker, NormalMapWorker, HsvWorker, RoughnessWorker, MetallicWorker, AoWorker, EmissionWorker,
