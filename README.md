@@ -213,22 +213,3 @@ MIT License - Vedi LICENSE per dettagli.
 
 ---
 
-## 🤝 Contributi
-
-Contributi benvenuti! Per favore:
-1. Fork il progetto
-2. Crea un branch per la feature
-3. Commit con messaggi descrittivi
-4. Push e apri una Pull Request
-
----
-
-## 📞 Supporto
-
-Per problemi o suggerimenti:
-- GitHub Issues
-- Email: support@pytexturestudio.com
-
----
-
-**PyTextureStudio** - Creato con ❤️ per artisti 3D e sviluppatori di giochi
