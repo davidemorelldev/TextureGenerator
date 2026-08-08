@@ -147,6 +147,7 @@ class SidebarPanel(QScrollArea):
     aoChanged = Signal()
     roughChanged = Signal()
     metalChanged = Signal()
+    emissionChanged = Signal()
     togglesSynced = Signal()
 
     def __init__(self, parent=None):
@@ -208,6 +209,11 @@ class SidebarPanel(QScrollArea):
         self.s_ao_blur = LabeledSlider("Blur Radius", 0.0, 20.0, 3.0, 0)
         self.ao_box = add_box("Ambient Occlusion", [self.s_ao_c, self.s_ao_b, self.s_ao_blur], [QCheckBox("Invert")], self.aoChanged)
 
+        self.s_em_t = LabeledSlider("Threshold", 0.0, 1.0, 0.7)
+        self.s_em_i = LabeledSlider("Intensity", 0.0, 5.0, 1.5)
+        self.em_box = add_box("Emission Map", [self.s_em_t, self.s_em_i], [], self.emissionChanged)
+        self.em_box.setChecked(False)
+
         lay.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
         self.setWidget(container)
 
@@ -235,7 +241,10 @@ class SidebarPanel(QScrollArea):
             'ao_on': self.ao_box.isChecked(),
             'ao_c': self.s_ao_c.value(),
             'ao_b': self.s_ao_b.value(),
-            'ao_blur': self.s_ao_blur.value()
+            'ao_blur': self.s_ao_blur.value(),
+            'em_on': self.em_box.isChecked(),
+            'em_t': self.s_em_t.value(),
+            'em_i': self.s_em_i.value()
         }
 
     def load_settings(self, d: dict):
@@ -262,6 +271,10 @@ class SidebarPanel(QScrollArea):
         self.s_ao_c.setValue(d['ao_c'])
         self.s_ao_b.setValue(d['ao_b'])
         self.s_ao_blur.setValue(d['ao_blur'])
+        if 'em_on' in d:
+            self.em_box.setChecked(d['em_on'])
+            self.s_em_t.setValue(d['em_t'])
+            self.s_em_i.setValue(d['em_i'])
 
 
 class MapPreview(QLabel):
@@ -365,6 +378,7 @@ class MainWindow(QMainWindow):
         self._rough_map: np.ndarray | None = None
         self._metal_map: np.ndarray | None = None
         self._ao_map: np.ndarray | None = None
+        self._emission_map: np.ndarray | None = None
         self._active_threads: list[ProcessingThread] = []
 
         self._build_ui()
@@ -414,6 +428,7 @@ class MainWindow(QMainWindow):
         self._prev_rough = MapPreview("Roughness")
         self._prev_metal = MapPreview("Metallic")
         self._prev_ao = MapPreview("Ambient Occlusion")
+        self._prev_emission = MapPreview("Emission")
 
         map_grid.addWidget(self._prev_albedo, 0, 0)
         map_grid.addWidget(self._prev_height, 0, 1)
@@ -421,6 +436,7 @@ class MainWindow(QMainWindow):
         map_grid.addWidget(self._prev_rough, 1, 0)
         map_grid.addWidget(self._prev_metal, 1, 1)
         map_grid.addWidget(self._prev_ao, 1, 2)
+        map_grid.addWidget(self._prev_emission, 2, 0, 1, 3)
         gl.addLayout(map_grid, 1)
         splitter.addWidget(grid_w)
 
@@ -469,6 +485,7 @@ class MainWindow(QMainWindow):
         sb.roughChanged.connect(self._schedule_roughness)
         sb.metalChanged.connect(self._schedule_metal)
         sb.aoChanged.connect(self._schedule_ao)
+        sb.emissionChanged.connect(self._schedule_emission)
         sb.togglesSynced.connect(self._sync_toggles)
 
         self.cb_mesh.currentIndexChanged.connect(self._on_mesh_changed)
@@ -590,6 +607,13 @@ class MainWindow(QMainWindow):
         worker = AoWorker(self._heightmap, sb.s_ao_c.value(), sb.s_ao_b.value(), int(sb.s_ao_blur.value()), False)
         self._start_worker(worker, self._on_ao_done, "Generating AO map...")
 
+    def _schedule_emission(self):
+        if self._source_image is None:
+            return
+        sb = self._sidebar
+        worker = EmissionWorker(self._source_image, sb.s_em_t.value(), sb.s_em_i.value(), sb.s_tile.value())
+        self._start_worker(worker, self._on_emission_done, "Generating emission map...")
+
     def _start_worker(self, worker, callback, message: str):
         self.statusBar().showMessage(message)
         thread = ProcessingThread(worker)
@@ -636,6 +660,11 @@ class MainWindow(QMainWindow):
             self._prev_ao.clear_image()
             self._gl.set_ao_map(None)
 
+        if sb.em_box.isChecked() and self._emission_map is not None:
+            self._prev_emission.set_image(self._emission_map)
+        else:
+            self._prev_emission.clear_image()
+
     def _on_base_done(self, result: np.ndarray):
         self._albedo_image = result
         self._prev_albedo.set_image(result)
@@ -664,6 +693,11 @@ class MainWindow(QMainWindow):
 
     def _on_ao_done(self, result: np.ndarray):
         self._ao_map = result
+        self._sync_toggles()
+        self._schedule_emission()
+
+    def _on_emission_done(self, result: np.ndarray):
+        self._emission_map = result
         self._sync_toggles()
         self.statusBar().showMessage("All maps ready")
 
