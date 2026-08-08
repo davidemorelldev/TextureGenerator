@@ -1,59 +1,234 @@
-# PyTextureStudio
+# PyTextureStudio Professional v3.0 🎨
 
-A PySide6 and OpenGL desktop app for processing 3D textures, generating PBR maps starting from an albedo (Height, Normal, Roughness, Metallic, AO), creating seamless tiles, and packing ORM textures for Unreal Engine and Unity.
+**PyTextureStudio** è un'applicazione desktop professionale per la generazione di texture PBR (Physically Based Rendering) per motori 3D, videogiochi e rendering architettonico. Sviluppata con Python, PySide6, OpenCV e OpenGL 3.3.
 
-## Requirements
+![Version](https://img.shields.io/badge/version-3.0.0-purple)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Python](https://img.shields.io/badge/python-3.10+-green)
 
-- Python 3.10+
-- OpenGL 3.3 compatible graphics drivers
+---
 
-## Setup & Running
+## ✨ Nuove Funzionalità v3.0
+
+### 🔥 Emission Map Generator
+- Genera mappe di emissione basate sulla luminosità della texture
+- Controllo soglia (threshold) e intensità
+- Supporto completo nel batch processing
+
+### 📚 Libreria di Preset Integrati
+- **6 preset professionali** pronti all'uso:
+  - Default
+  - High Contrast
+  - Glossy Surface  
+  - Metallic Surface
+  - Weathered Look
+  - Soft Organic
+
+### ⚙️ Configurazione Engine-Specific
+- Export ORM ottimizzato per:
+  - Unreal Engine
+  - Unity
+  - Godot
+  - Three.js
+
+### 💾 Gestione File Recenti
+- Accesso rapido alle ultime texture aperte
+- Fino a 10 file nella cronologia
+
+### 🎯 Miglioramenti UI/UX
+- Menu bar completo con scorciatoie da tastiera
+- Toolbar con icone intuitive
+- Status bar con messaggi di conferma (✓)
+- Dialog About professionale
+- Salvataggio automatico impostazioni finestra
+
+### 📁 Sistema di Preset Avanzato
+- Salvataggio preset in cartella dedicata (~/.pytexturestudio/presets/)
+- Menu Presets con accesso a built-in e user preset
+- Caricamento one-click
+
+---
+
+## 🚀 Installazione
 
 ```bash
+# Clona o scarica il progetto
+cd PyTextureStudio
+
+# Installa le dipendenze
 pip install -r requirements.txt
+
+# Avvia l'applicazione
 python main.py
 ```
 
-## Features
+### Requisiti
+- Python 3.10+
+- OpenGL 3.3 compatibile
+- 4GB RAM minimo (8GB consigliato)
+- GPU con supporto OpenGL 3.3+
 
-- **Base Texture & Seamless**: Adjust Hue, Saturation, Value, and Tiling. Includes a **Make Seamless** tool to generate tileable textures via center-patch blending.
-- **PBR Map Generation**:
-  - **Heightmap**: Contrast, brightness, and inversion controls.
-  - **Normal Map**: Generated via Sobel filters with intensity scaling and DirectX / OpenGL Y-channel toggle.
-  - **Roughness & Metallic Maps**: Custom contrast/threshold and brightness settings (with Glossy invert option).
-  - **Ambient Occlusion**: Heightmap-derived AO with Gaussian blur radius control.
-- **ORM Channel Packing**: Packs Ambient Occlusion (Red), Roughness (Green), and Metallic (Blue) into a single `ORM_Packed.png` texture.
-- **3D Viewport**:
-  - Rendered using OpenGL 3.3 Core and custom GLSL shaders (Key, Fill, and Rim lighting).
-  - Built-in Cube and Sphere primitives, plus custom `.obj` mesh loading with automatic UV and normal calculation.
-  - Mouse orbit rotation, zoom, auto-rotate toggle, and bump/AO strength sliders.
-- **Batch Processing & Presets**:
-  - Asynchronous batch conversion of entire image folders using `QThread` workers.
-  - Save and load UI parameter configurations to JSON files.
+---
 
-## File Overview
+## 📋 Comandi Rapidi
+
+| Azione | Scorciatoia | Menu |
+|--------|-------------|------|
+| Apri Texture | `Ctrl+O` | File → Open |
+| Salva Preset | `Ctrl+S` | File → Save Preset |
+| Carica Preset | `Ctrl+Shift+O` | File → Load Preset |
+| Batch Process | `Ctrl+B` | File → Batch Process |
+| Make Seamless | `Ctrl+M` | Tools → Make Seamless |
+| Export ORM | `Ctrl+E` | Tools → Export ORM |
+| Export All | `Ctrl+Shift+E` | Tools → Export All |
+| Esci | `Ctrl+Q` | File → Exit |
+
+---
+
+## 🎮 Controlli Viewport 3D
+
+| Azione | Controllo |
+|--------|-----------|
+| Ruota camera | Drag mouse sinistro |
+| Zoom | Scroll wheel |
+| Reset camera | Doppio click |
+| Auto-rotazione | Checkbox "Auto-Rotate" |
+
+---
+
+## 🗂️ Struttura Progetto
 
 ```
-├── main.py               # Entry point
-├── main_window.py        # MainWindow UI layout, sidebar controls, presets, and batch logic
-├── texture_processor.py  # Image processing algorithms and async worker threads
-├── gl_viewport.py        # QOpenGLWidget viewport, OBJ importer, and GLSL shaders
-└── requirements.txt      # Dependencies
+PyTextureStudio/
+├── main.py                 # Entry point applicazione
+├── main_window.py          # UI principale, menu, toolbar
+├── texture_processor.py    # Algoritmi processing immagini
+├── gl_viewport.py          # Viewport OpenGL 3D
+├── config.py               # Configurazione e preset
+├── about_dialog.py         # Dialog informazioni
+├── requirements.txt        # Dipendenze Python
+└── README.md              # Questo file
 ```
 
-## Controls Quick Reference
+---
 
-| Action | Control / Gesture |
-|--------|-------------------|
-| Load Texture | **Load Image** button |
-| Make Tileable | **Make Seamless** button |
-| Load 3D Model | **Import .obj** button |
-| Save/Load Settings | **Save Preset** / **Load Preset** buttons |
-| Batch Process | **Batch Process Folder** button |
-| Export Packed ORM | **Export ORM (UE/Unity)** button |
-| Export Maps | **Export All Individual Maps** button |
-| Orbit Camera | Left mouse drag in viewport |
-| Zoom Camera | Mouse scroll wheel in viewport |
-| Reset Camera | Double-click in viewport |
+## 🎨 Mappe PBR Generate
 
+1. **Albedo/Base** - Texture colore con regolazioni HSV e tiling
+2. **Heightmap** - Mappa altezza da contrasto/luminosità
+3. **Normal Map** - Mappa normali DirectX/OpenGL
+4. **Roughness** - Mappa rugosità (opzionale glossy invert)
+5. **Metallic** - Mappa metallicità con threshold
+6. **Ambient Occlusion** - AO derivata da heightmap con blur
+7. **Emission** - Nuova! Mappa emissione da soglia luminosità
 
+---
+
+## 📦 Formati Supportati
+
+### Input
+- PNG, JPEG, TGA, BMP, EXR, HDR
+
+### Output
+- PNG (consigliato per qualità)
+- JPEG (per dimensioni ridotte)
+- TGA, BMP
+
+---
+
+## 🔧 Configurazione
+
+Le impostazioni utente sono salvate in:
+```
+~/.pytexturestudio/
+├── config.json      # Impostazioni applicazione
+└── presets/         # Preset utente
+```
+
+### Impostazioni Disponibili
+- Dimensioni finestra
+- Preset engine preferito
+- Formato export default
+- Cartelle recenti
+- Cronologia file
+
+---
+
+## 💡 Consigli d'Uso
+
+### Per Texture Tileable
+1. Attiva "Make Seamless" prima di generare le mappe
+2. Regola "Tiling" per controllare la ripetizione
+3. Verifica nel viewport 3D con la sfera
+
+### Per Materiali Metallici
+1. Usa il preset "Metallic Surface"
+2. Attiva la checkbox "Metallic Map"
+3. Regola threshold e brightness per dettagli
+
+### Per Superfici Lucide
+1. Usa il preset "Glossy Surface"  
+2. Attiva "Invert (Glossy)" su Roughness
+3. Riduci intensità Normal Map
+
+### Per Luci e Neon
+1. Attiva "Emission Map"
+2. Regola Threshold per isolare aree luminose
+3. Aumenta Intensity per effetto glow
+
+---
+
+## 🛠️ Sviluppo
+
+### Aggiungere un Nuovo Worker
+```python
+class NewWorker(_BaseWorker):
+    def __init__(self, image, param1, param2):
+        super().__init__()
+        self._image = image
+        self._param1 = param1
+        self._param2 = param2
+    
+    def run(self):
+        try:
+            result = process(self._image, self._param1, self._param2)
+            self.finished.emit(result)
+        except Exception as e:
+            self.error.emit(str(e))
+```
+
+### Aggiungere un Preset
+Modifica `config.py`:
+```python
+BUILTIN_PRESETS["MyPreset"] = {
+    'hue': 0.0, 'sat': 1.0, ...
+}
+```
+
+---
+
+## 📄 Licenza
+
+MIT License - Vedi LICENSE per dettagli.
+
+---
+
+## 🤝 Contributi
+
+Contributi benvenuti! Per favore:
+1. Fork il progetto
+2. Crea un branch per la feature
+3. Commit con messaggi descrittivi
+4. Push e apri una Pull Request
+
+---
+
+## 📞 Supporto
+
+Per problemi o suggerimenti:
+- GitHub Issues
+- Email: support@pytexturestudio.com
+
+---
+
+**PyTextureStudio** - Creato con ❤️ per artisti 3D e sviluppatori di giochi
