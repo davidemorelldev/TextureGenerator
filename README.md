@@ -170,37 +170,6 @@ User settings are saved in:
 
 ---
 
-## Development
-
-### Adding a New Worker
-```python
-class NewWorker(_BaseWorker):
-    def __init__(self, image, param1, param2):
-        super().__init__()
-        self._image = image
-        self._param1 = param1
-        self._param2 = param2
-    
-    def run(self):
-        try:
-            result = process(self._image, self._param1, self._param2)
-            self.finished.emit(result)
-        except Exception as e:
-            self.error.emit(str(e))
-```
-
-### Adding a Preset
-Edit `config.py`:
-```python
-BUILTIN_PRESETS["MyPreset"] = {
-    'hue': 0.0, 'sat': 1.0, ...
-}
-```
-
----
-
-## License
-
 MIT License - See LICENSE for details.
 
 ---
