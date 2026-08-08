@@ -239,6 +239,30 @@ class AoWorker(_BaseWorker):
             self.error.emit(str(e))
 
 
+class EmissionWorker(_BaseWorker):
+    """Worker for generating emission map from brightness/color threshold"""
+    def __init__(self, image: np.ndarray, threshold: float, intensity: float, tiling: float):
+        super().__init__()
+        self._image = image
+        self._threshold = threshold
+        self._intensity = intensity
+        self._tiling = tiling
+
+    def run(self):
+        try:
+            img = _to_float32(self._image)
+            # Calculate brightness and create mask based on threshold
+            brightness = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            mask = np.clip((brightness - self._threshold) / (1.0 - self._threshold), 0, 1)
+            # Apply intensity
+            mask = np.clip(mask * self._intensity, 0, 1)
+            emission = _to_uint8(mask)
+            result = cv2.cvtColor(emission, cv2.COLOR_GRAY2BGR)
+            self.finished.emit(TextureProcessor.apply_tiling(result, self._tiling))
+        except Exception as e:
+            self.error.emit(str(e))
+
+
 class ProcessingThread(QThread):
     def __init__(self, worker: _BaseWorker, parent=None):
         super().__init__(parent)
