@@ -1,22 +1,22 @@
-# PyTextureStudio Professional v3.0 🎨
+# PyTextureStudio Professional v2.3
 
-**PyTextureStudio** è un'applicazione desktop professionale per la generazione di texture PBR (Physically Based Rendering) per motori 3D, videogiochi e rendering architettonico. Sviluppata con Python, PySide6, OpenCV e OpenGL 3.3.
+**PyTextureStudio** is a professional desktop application for generating PBR (Physically Based Rendering) textures for 3D engines, video games, and architectural rendering. Built with Python, PySide6, OpenCV, and OpenGL 3.3.
 
-![Version](https://img.shields.io/badge/version-3.0.0-purple)
+![Version](https://img.shields.io/badge/version-2.3-purple)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-green)
 
 ---
 
-## ✨ Nuove Funzionalità v3.0
+## Features
 
-### 🔥 Emission Map Generator
-- Genera mappe di emissione basate sulla luminosità della texture
-- Controllo soglia (threshold) e intensità
-- Supporto completo nel batch processing
+### Emission Map Generator
+- Generate emission maps based on texture brightness
+- Threshold and intensity controls
+- Full support in batch processing
 
-### 📚 Libreria di Preset Integrati
-- **6 preset professionali** pronti all'uso:
+### Built-in Preset Library
+- **6 professional presets** ready to use:
   - Default
   - High Contrast
   - Glossy Surface  
@@ -24,163 +24,155 @@
   - Weathered Look
   - Soft Organic
 
-### ⚙️ Configurazione Engine-Specific
-- Export ORM ottimizzato per:
-  - Unreal Engine
-  - Unity
-  - Godot
-  - Three.js
+### ORM Export
+- Export packed ORM textures (Ambient Occlusion, Roughness, Metallic)
+- Single PNG file for optimized workflow
 
-### 💾 Gestione File Recenti
-- Accesso rapido alle ultime texture aperte
-- Fino a 10 file nella cronologia
+### Batch Processing
+- Process entire folders of textures
+- Three export modes: Individual Maps, ORM Only, or Both
 
-### 🎯 Miglioramenti UI/UX
-- Menu bar completo con scorciatoie da tastiera
-- Toolbar con icone intuitive
-- Status bar con messaggi di conferma (✓)
-- Dialog About professionale
-- Salvataggio automatico impostazioni finestra
+### Make Seamless
+- Convert any image to a tileable seamless texture
+- Center-patch blending algorithm
 
-### 📁 Sistema di Preset Avanzato
-- Salvataggio preset in cartella dedicata (~/.pytexturestudio/presets/)
-- Menu Presets con accesso a built-in e user preset
-- Caricamento one-click
+### 3D Viewport
+- Real-time preview on cube or sphere
+- Import custom .obj meshes
+- Auto-rotation and manual camera controls
+- Adjustable bump scale and AO strength
 
 ---
 
-## 🚀 Installazione
+## Installation
 
 ```bash
-# Clona o scarica il progetto
+# Clone or download the project
 cd PyTextureStudio
 
-# Installa le dipendenze
+# Install dependencies
 pip install -r requirements.txt
 
-# Avvia l'applicazione
+# Launch the application
 python main.py
 ```
 
-### Requisiti
+### Requirements
 - Python 3.10+
-- OpenGL 3.3 compatibile
-- 4GB RAM minimo (8GB consigliato)
-- GPU con supporto OpenGL 3.3+
+- OpenGL 3.3 compatible
+- 4GB RAM minimum (8GB recommended)
+- GPU with OpenGL 3.3+ support
 
 ---
 
-## 📋 Comandi Rapidi
+## Quick Commands
 
-| Azione | Scorciatoia | Menu |
-|--------|-------------|------|
-| Apri Texture | `Ctrl+O` | File → Open |
-| Salva Preset | `Ctrl+S` | File → Save Preset |
-| Carica Preset | `Ctrl+Shift+O` | File → Load Preset |
-| Batch Process | `Ctrl+B` | File → Batch Process |
-| Make Seamless | `Ctrl+M` | Tools → Make Seamless |
-| Export ORM | `Ctrl+E` | Tools → Export ORM |
-| Export All | `Ctrl+Shift+E` | Tools → Export All |
-| Esci | `Ctrl+Q` | File → Exit |
+| Action | Toolbar Button |
+|--------|---------------|
+| Load Image | Load Image |
+| Make Seamless | Make Seamless |
+| Save Preset | Save Preset |
+| Load Preset | Load Preset |
+| Batch Process | Batch Process Folder |
+| Export ORM | Export ORM (UE/Unity) |
+| Export All Maps | Export All Individual Maps |
 
 ---
 
-## 🎮 Controlli Viewport 3D
+## 3D Viewport Controls
 
-| Azione | Controllo |
-|--------|-----------|
-| Ruota camera | Drag mouse sinistro |
+| Action | Control |
+|--------|---------|
+| Rotate camera | Drag left mouse button |
 | Zoom | Scroll wheel |
-| Reset camera | Doppio click |
-| Auto-rotazione | Checkbox "Auto-Rotate" |
+| Reset camera | Double click |
+| Auto-rotation | "Auto-Rotate" checkbox |
 
 ---
 
-## 🗂️ Struttura Progetto
+## Project Structure
 
 ```
 PyTextureStudio/
-├── main.py                 # Entry point applicazione
-├── main_window.py          # UI principale, menu, toolbar
-├── texture_processor.py    # Algoritmi processing immagini
-├── gl_viewport.py          # Viewport OpenGL 3D
-├── config.py               # Configurazione e preset
-├── about_dialog.py         # Dialog informazioni
-├── requirements.txt        # Dipendenze Python
-└── README.md              # Questo file
+├── main.py                 # Application entry point
+├── main_window.py          # Main UI, toolbar, viewport
+├── texture_processor.py    # Image processing algorithms
+├── gl_viewport.py          # OpenGL 3D viewport
+├── config.py               # Configuration and presets
+├── about_dialog.py         # About dialog
+├── requirements.txt        # Python dependencies
+└── README.md               # This file
 ```
 
 ---
 
-## 🎨 Mappe PBR Generate
+## PBR Maps Generated
 
-1. **Albedo/Base** - Texture colore con regolazioni HSV e tiling
-2. **Heightmap** - Mappa altezza da contrasto/luminosità
-3. **Normal Map** - Mappa normali DirectX/OpenGL
-4. **Roughness** - Mappa rugosità (opzionale glossy invert)
-5. **Metallic** - Mappa metallicità con threshold
-6. **Ambient Occlusion** - AO derivata da heightmap con blur
-7. **Emission** - Nuova! Mappa emissione da soglia luminosità
+1. **Albedo/Base** - Color texture with HSV adjustments and tiling
+2. **Heightmap** - Height map from contrast/brightness
+3. **Normal Map** - DirectX/OpenGL normal map
+4. **Roughness** - Roughness map (optional glossy invert)
+5. **Metallic** - Metallic map with threshold control
+6. **Ambient Occlusion** - AO derived from heightmap with blur
+7. **Emission** - Emission map from brightness threshold
 
 ---
 
-## 📦 Formati Supportati
+## Supported Formats
 
 ### Input
-- PNG, JPEG, TGA, BMP, EXR, HDR
+- PNG, JPEG, TGA, BMP
 
 ### Output
-- PNG (consigliato per qualità)
-- JPEG (per dimensioni ridotte)
-- TGA, BMP
+- PNG (recommended for quality)
+- JPEG, TGA, BMP
 
 ---
 
-## 🔧 Configurazione
+## Configuration
 
-Le impostazioni utente sono salvate in:
+User settings are saved in:
 ```
 ~/.pytexturestudio/
-├── config.json      # Impostazioni applicazione
-└── presets/         # Preset utente
+├── config.json      # Application settings
+└── presets/         # User presets
 ```
 
-### Impostazioni Disponibili
-- Dimensioni finestra
-- Preset engine preferito
-- Formato export default
-- Cartelle recenti
-- Cronologia file
+### Available Settings
+- Window dimensions
+- Default export format
+- Recent files history
+- Last export folder
 
 ---
 
-## 💡 Consigli d'Uso
+## Usage Tips
 
-### Per Texture Tileable
-1. Attiva "Make Seamless" prima di generare le mappe
-2. Regola "Tiling" per controllare la ripetizione
-3. Verifica nel viewport 3D con la sfera
+### For Tileable Textures
+1. Use "Make Seamless" before generating maps
+2. Adjust "Tiling" slider to control repetition
+3. Check the result in the 3D viewport
 
-### Per Materiali Metallici
-1. Usa il preset "Metallic Surface"
-2. Attiva la checkbox "Metallic Map"
-3. Regola threshold e brightness per dettagli
+### For Metallic Materials
+1. Enable the Metallic Map checkbox
+2. Adjust threshold and brightness for details
+3. Use the "Metallic Surface" preset as starting point
 
-### Per Superfici Lucide
-1. Usa il preset "Glossy Surface"  
-2. Attiva "Invert (Glossy)" su Roughness
-3. Riduci intensità Normal Map
+### For Glossy Surfaces
+1. Use the "Glossy Surface" preset
+2. Enable "Invert (Glossy)" on Roughness
+3. Reduce Normal Map intensity
 
-### Per Luci e Neon
-1. Attiva "Emission Map"
-2. Regola Threshold per isolare aree luminose
-3. Aumenta Intensity per effetto glow
+### For Lights and Neon
+1. Enable "Emission Map"
+2. Adjust Threshold to isolate bright areas
+3. Increase Intensity for glow effect
 
 ---
 
-## 🛠️ Sviluppo
+## Development
 
-### Aggiungere un Nuovo Worker
+### Adding a New Worker
 ```python
 class NewWorker(_BaseWorker):
     def __init__(self, image, param1, param2):
@@ -197,8 +189,8 @@ class NewWorker(_BaseWorker):
             self.error.emit(str(e))
 ```
 
-### Aggiungere un Preset
-Modifica `config.py`:
+### Adding a Preset
+Edit `config.py`:
 ```python
 BUILTIN_PRESETS["MyPreset"] = {
     'hue': 0.0, 'sat': 1.0, ...
@@ -207,9 +199,9 @@ BUILTIN_PRESETS["MyPreset"] = {
 
 ---
 
-## 📄 Licenza
+## License
 
-MIT License - Vedi LICENSE per dettagli.
+MIT License - See LICENSE for details.
 
 ---
 
